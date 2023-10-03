@@ -1,4 +1,5 @@
 # Cloudformation template ETL CNPJ
+AWSTemplateFormatVersion: 2010-09-09
 
 Parameters:
   BucketName:
@@ -124,6 +125,17 @@ Resources:
         - !Ref SimpleLambdaPolicy
         - !Ref CNPJBucketPolicy
 
+  MyLambdaLayer:
+    Type: AWS::Lambda::LayerVersion
+    Properties:
+      LayerName: bibliotecas
+      Description: bibliotecas python
+      Content:
+        S3Bucket: bucket-geral-giuvan
+        S3Key: python.zip
+      CompatibleRuntimes:
+        - python3.9
+
   LambdaCheckUpdate:
     Type: AWS::Lambda::Function
     Properties:
@@ -136,6 +148,8 @@ Resources:
       Code:
         S3Bucket: !Ref CodeBucketName
         S3Key: !Ref CheckUpdateCodeKey
+      Layers:
+        - !Ref MyLambdaLayer
   
   LambdaDownloadTest:
     Type: AWS::Lambda::Function
@@ -164,13 +178,15 @@ Resources:
       PackageType: Zip
       Role: !GetAtt LambdaRoleWithS3.Arn
       Runtime: python3.9
-      Timeout: 480
+      Timeout: 900
       EphemeralStorage:
         Size: 8000
       MemorySize: 9000
       Code:
         S3Bucket: !Ref CodeBucketName
         S3Key: !Ref FetchDataCodeKey
+      Layers:
+        - !Ref MyLambdaLayer
   
   CNPJStateMachineRole:
     Type: AWS::IAM::Role
