@@ -594,6 +594,7 @@ Para o Scheduler funcionar precisamos da `CNPJSchedulerRole`, que terá a *inlin
 Antes de começarmos, recomendo usar a região N. Virginia (us-east-1) pois é a mais barata e a latência neste projeto é irrelevante. A criação da infraestrutura será simples porque usaremos um template do CloudFormation. Além disso, os recursos criados nesse template ficam agrupados em uma *stack*, o que simplifica a manutenção.
 
 O primeiro passo é um pouco manual. É necessário construir o *deployment packages* das lambdas `check_update` e `fetch_data`, confome descrito na seção anterior. Os *zips* resultantes estarão na pasta `artifacts`. A função `download_test` não tem depedências e, portanto, não passa por essa parte. Seu código é passado diretamente no template do CloudFormation.
+Construir uma layer para garantia de funcionamento do código com as bibliotecas necessárias, como está descrito dentro template em *MyLambdaLayer*.
 
 Depois, precisamos subir os *deployment packages* e o *template* do CloudFormation `cnpj_infra_template.yml` em um *bucket* previamente criado. Isso pode ser feito pelo AWS CLI ou pelo *console*. Minha sugestão é criar na mão um *bucket* que seja reaproveitado em todos os seus projetos cuja finalidade é especificamente guardar artefatos necessários para a criação de infraestrutura via CloudFormation.  
 
