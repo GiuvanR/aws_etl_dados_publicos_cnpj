@@ -125,16 +125,16 @@ Resources:
         - !Ref SimpleLambdaPolicy
         - !Ref CNPJBucketPolicy
 
-  MyLambdaLayer:
-    Type: AWS::Lambda::LayerVersion
-    Properties:
-      LayerName: bibliotecas
-      Description: bibliotecas python
-      Content:
-        S3Bucket: bucket-geral-giuvan
-        S3Key: python.zip
-      CompatibleRuntimes:
-        - python3.9
+  # MyLambdaLayer:
+  #   Type: AWS::Lambda::LayerVersion
+  #   Properties:
+  #     LayerName: bibliotecas
+  #     Description: bibliotecas python
+  #     Content:
+  #       S3Bucket: bucket-geral
+  #       S3Key: python.zip
+  #     CompatibleRuntimes:
+  #       - python3.9
 
   LambdaCheckUpdate:
     Type: AWS::Lambda::Function
@@ -148,8 +148,8 @@ Resources:
       Code:
         S3Bucket: !Ref CodeBucketName
         S3Key: !Ref CheckUpdateCodeKey
-      Layers:
-        - !Ref MyLambdaLayer
+      #Layers:
+      #  - !Ref MyLambdaLayer
   
   LambdaDownloadTest:
     Type: AWS::Lambda::Function
@@ -181,12 +181,12 @@ Resources:
       Timeout: 900
       EphemeralStorage:
         Size: 8000
-      MemorySize: 9000
+      MemorySize: 10000
       Code:
         S3Bucket: !Ref CodeBucketName
         S3Key: !Ref FetchDataCodeKey
-      Layers:
-        - !Ref MyLambdaLayer
+      #Layers:
+      #  - !Ref MyLambdaLayer
   
   CNPJStateMachineRole:
     Type: AWS::IAM::Role
